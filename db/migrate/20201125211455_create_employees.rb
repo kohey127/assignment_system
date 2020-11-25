@@ -5,7 +5,7 @@ class CreateEmployees < ActiveRecord::Migration[6.0]
       t.integer :grade_id, null: false
       t.string :name, null: false
       t.string :employee_id, null: false
-      t.text :information, null: false
+      t.text :information
       t.boolean	:is_active, null: false, default: true
       
       t.timestamps

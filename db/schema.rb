@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_211540) do
     t.integer "grade_id", null: false
     t.string "name", null: false
     t.string "employee_id", null: false
-    t.text "information", null: false
+    t.text "information"
     t.boolean "is_active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_211540) do
 
   create_table "projects", force: :cascade do |t|
     t.string "name", null: false
-    t.text "information", null: false
+    t.text "information"
     t.date "scheduled_start_date", null: false
     t.date "scheduled_finish_date", null: false
     t.integer "status", null: false
