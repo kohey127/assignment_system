@@ -1,8 +1,7 @@
 # アサイン管理システム
-
 システム開発案件の受注を効率的に行うための社員アサイン管理システム
 
-* アサインを管理する目的
+## アサインを管理する目的
 人的リソースの最適化。未来の社員別作業負担を予測し、空き工数が発生しないような無駄のない案件の受注を行う。
 
 ## 課題
@@ -11,8 +10,8 @@
 ## 手だて
 Ruby on Railsで開発したアプリケーション上に各社員の月別の稼働率を入力し管理することで、操作を簡略化す
 
-# 開発環境
-OS：Linux(Ubuntu)
-言語：HTML,CSS,Javascript,Ruby,SQL
-フレームワーク：Ruby on Rails
-使用ツール：cloud9、heroku
+## 開発環境
+* OS：Linux(Ubuntu)
+* 言語：HTML,CSS,Javascript,Ruby,SQL
+* フレームワーク：Ruby on Rails
+* 使用ツール：cloud9、heroku
