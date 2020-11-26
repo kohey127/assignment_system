@@ -4,6 +4,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   test "案件⼀覧画⾯が表示できること" do
     get projects_path
     assert_response :success
+    assert_select "title", "案件一覧 | Assign Management System"
   end
 
   # test "should get show" do
@@ -14,6 +15,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   test "新規案件追加画⾯が表示できること" do
     get new_project_path
     assert_response :success
+    assert_select "title", "案件新規作成 | Assign Management System"
   end
 
   # test "should get create" do

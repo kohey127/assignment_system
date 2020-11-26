@@ -4,6 +4,7 @@ class CommitsControllerTest < ActionDispatch::IntegrationTest
   test "トップ画⾯が表示できること" do
     get root_path
     assert_response :success
+    assert_select "title", "トップ | Assign Management System"
   end
 
   # test "should get show" do
@@ -11,9 +12,10 @@ class CommitsControllerTest < ActionDispatch::IntegrationTest
   #   assert_response :success
   # end
 
-  test "should get new" do
+  test "新規案件追加画⾯が表示できること" do
     get new_commit_path
     assert_response :success
+    assert_select "title", "稼働率新規作成 | Assign Management System"
   end
 
   # test "should get create" do

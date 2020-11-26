@@ -4,6 +4,7 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
   test "社員⼀覧画⾯が表示できること" do
     get employees_path
     assert_response :success
+    assert_select "title", "社員一覧 | Assign Management System"
   end
 
   # test "should get show" do
@@ -12,8 +13,9 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
   # end
 
   test "新規社員追加画⾯が表示できること" do
-    get new_project_path
+    get new_employee_path
     assert_response :success
+    assert_select "title", "社員新規作成 | Assign Management System"
   end
 
   # test "should get create" do
