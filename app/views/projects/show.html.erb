@@ -1,3 +1,27 @@
 <% provide(:title, '案件詳細') %>
-<h1>Projects#show</h1>
-<p>Find me in app/views/projects/show.html.erb</p>
+<h2 class="icon">案件詳細</h2>
+<div class="assign_form">
+  <%= render 'layouts/error_messages', resource: @project %>
+  <table>
+    <tr>
+      <td>案件名</td>
+      <td><%= @project.name %></td>
+    </tr>
+    <tr>
+      <td>案件情報</td>
+      <td><%= @project.information %></td>
+    </tr>
+    <tr>
+      <td>開始予定日</td>
+      <td><%= @project.scheduled_start_date %></td>
+    </tr>
+    <tr>
+      <td>完了予定日</td>
+      <td><%= @project.scheduled_finish_date %></td>
+    </tr>
+  </table>
+  <div class="btn_wrap">
+    <%= link_to "編集する", edit_project_path, :class => "btn_blue_green" %>
+    <%= link_to "削除する", project_path(@project.id), method: :delete, data: { confirm: "本当に削除してもよろしいですか?" }, :class => "btn_blue_green" %>
+  </div>
+</div>

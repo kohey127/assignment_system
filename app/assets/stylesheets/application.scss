@@ -224,6 +224,7 @@ header {
 .btn_blue_green:hover {
   background: #1ca59e;
   color: #fff;
+  text-decoration: none;
 }
 
 // 案件新規作成画面
@@ -252,6 +253,29 @@ header {
     .btn_wrap {
       text-align: center;
       margin: 30px auto;
+    }
+  }
+}
+
+// 一覧表示画面
+.index_table_wrap {
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 2px;
+  .index_table_btn_wrap {
+    text-align: right;
+    
+  }
+  .assign_index_table {
+    border-collapse: collapse;
+    border: solid 2px gray;
+    margin: 40px;
+    width: 90%;
+    th, td {
+      text-align: center;
+      padding: 5px;
+      border: dashed 1px gray;
     }
   }
 }

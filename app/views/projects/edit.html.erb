@@ -1,3 +1,36 @@
 <% provide(:title, '案件情報編集') %>
-<h1>Projects#edit</h1>
-<p>Find me in app/views/projects/edit.html.erb</p>
+<h2 class="icon">案件情報編集</h2>
+<div class="assign_form">
+  <%= form_with(model: @project, url: project_path, method: :patch, local: true) do |f| %>
+    <%= render 'layouts/error_messages', resource: @project %>
+    <table>
+      <tr>
+        <td>案件名</td>
+        <td>
+          <%= f.text_field :name, :class => "text_form" %>
+        </td>
+      </tr>
+      <tr>
+        <td>案件情報</td>
+        <td>
+          <%= f.text_area :information, rows: 10, cols: 50 %>
+        </td>
+      </tr>
+      <tr>
+        <td>開始予定日</td>
+        <td>
+          <%= f.date_field :scheduled_start_date, :class => "month_form" %>
+        </td>
+      </tr>
+      <tr>
+        <td>完了予定日</td>
+        <td>
+          <%= f.date_field :scheduled_finish_date, :class => "month_form" %>
+        </td>
+      </tr>
+    </table>
+    <div class="btn_wrap">
+      <%= f.submit "更新する", :class => "btn_blue_green" %>
+    </div>
+  <% end %>
+</div>
