@@ -71,17 +71,21 @@
 
 // 全体
 body {
-  background-color: #FCFCF0;
-  font-family: "Noto Sans Japanese", "Noto Sans";
   font-size: 14px;
   color: #656565;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   line-height: 1.8em;
   font-weight: normal;
+  color: #797979;
+  background: #eaeaea;
+  background-color: rgb(234, 234, 234);
+  font-family: 'Ruda', "Noto Sans Japanese", "Noto Sans", sans-serif;
+  font-size: 13px;
 }
 
 main {
-  margin: 100px 0 50px;
+  width: 90%;
+  margin: 100px auto 50px;
 }
 
 .nothing_sentence {
@@ -139,4 +143,72 @@ header {
       }
     }
   }
+}
+
+// ログイン画面
+.inner {
+  text-align: center;
+  .login_form {
+    margin-top: 25px;  
+  }
+}
+
+// 固定タイトル
+.icon::before {
+  content: "";
+  padding-right: 10px;
+  border-left: 7px solid #4ECDC4;
+}
+.icon {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 70px;
+  z-index: 50;
+  padding: 10px 0;
+  background-color: #FCFCF0;
+}
+
+// 固定背景
+.article_wrap {
+  background-color: white;
+  width: 600px;
+  height: 450px;
+  margin: 0 auto;
+  padding: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 3px grey;
+  padding: 60px;
+}
+
+// 固定ボタン
+.btn_blue_green {
+  background: #4ECDC4;
+  padding: 12px 0;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  width: 130px;
+}
+.btn_blue_green:hover {
+  background: #1ca59e;
+  color: #fff;
 }
