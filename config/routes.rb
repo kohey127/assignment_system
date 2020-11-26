@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   devise_scope :manager do
     get "sign_in", :to => "managers/sessions#new"
-    get "sign_out", :to => "managers/sessions#destroy"
+    delete "sign_out", :to => "managers/sessions#destroy"
   end
   
   root 'commits#index'
