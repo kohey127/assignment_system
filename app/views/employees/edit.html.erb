@@ -1,3 +1,42 @@
 <% provide(:title, '社員情報編集') %>
-<h1>Employees#edit</h1>
-<p>Find me in app/views/employees/edit.html.erb</p>
+<h2 class="icon">社員情報編集</h2>
+<div class="assign_form">
+  <%= form_with(model: @employee, url: employee_path, method: :patch, local: true) do |f| %>
+    <%= render 'layouts/error_messages', resource: @employee %>
+    <table>
+      <tr>
+        <td>部署</td>
+        <td>
+          <%= f.select :department_id, Department.all.pluck(:name, :id), include_blank: '選択してください' %>
+        </td>
+      </tr>
+      <tr>
+        <td>グレード</td>
+        <td>
+          <%= f.select :grade_id, Grade.all.pluck(:name, :id), include_blank: '選択してください' %>
+        </td>
+      </tr>
+      <tr>
+        <td>社員名</td>
+        <td>
+          <%= f.text_field :name, :class => "text_form" %>
+        </td>
+      </tr>
+      <tr>
+        <td>社員ID</td>
+        <td>
+          <%= f.text_field :employee_id, :class => "text_form" %>
+        </td>
+      </tr>
+      <tr>
+        <td>社員情報</td>
+        <td>
+          <%= f.text_area :information, rows: 10, cols: 50 %>
+        </td>
+      </tr>
+    </table>
+    <div class="btn_wrap">
+      <%= f.submit "更新する", :class => "btn_blue_green" %>
+    </div>
+  <% end %>
+</div>

@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :authenticate_manager!
   
   def index
     @projects = Project.all

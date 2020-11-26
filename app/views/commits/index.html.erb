@@ -1,1 +1,39 @@
 <% provide(:title, 'トップ') %>
+
+<% provide(:title, '案件一覧') %>
+<h2 class="icon">稼働率空き状況推移</h2>
+
+<h2 class="icon">社員別稼働率</h2>
+<div class="index_table_wrap">
+	<table class="assign_index_table">
+		<thead>
+			<tr>
+				<th>社員ID</th>
+				<th>社員名</th>
+				<th>4月</th>
+				<th>5月</th>
+				<th>6月</th>
+				<th>7月</th>
+				<th>8月</th>
+				<th>9月</th>
+				<th>10月</th>
+				<th>11月</th>
+				<th>12月</th>
+				<th>1月</th>
+				<th>2月</th>
+				<th>3月</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @employees.each do |employee| %>
+				<tr>
+					<td><%= employee.employee_id %></td>
+					<td><%= link_to employee.name, employee_path(employee.id) %></td>
+					<% 12.times do |i| %>
+					  <td><% employee.how_commit(i) %></td>
+      				<% end %>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

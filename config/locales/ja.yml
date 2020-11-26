@@ -30,6 +30,8 @@ ja:
         id: ID
         name: 社員名
         employee_id: 社員ID
+        department: 部署
+        grade: グレード
         information: 社員情報
         is_active: 有効状態
         created_at: 登録日時
