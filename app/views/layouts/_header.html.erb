@@ -1,0 +1,24 @@
+<header>
+  <% if manager_signed_in? %>
+    <div class="header_content">
+      <div class="logo">
+        <a href="/">
+          <span>トップページ</span>
+        </a>
+      </div>
+      <div class="welcome_header">
+        <p class="welcome_header_content">
+          ようこそ、<%= current_manager.name %>さん!
+        </p>
+      </div>
+      <div class="nav_menu">
+        <ul>
+          <li><%= link_to 'トップ', root_path %></li>
+          <li><%= link_to '案件一覧', projects_path %></li>
+          <li><%= link_to '社員一覧', employees_path %></li>
+          <li><%= link_to 'ログアウト', sign_out_path, method: :delete %></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</header>

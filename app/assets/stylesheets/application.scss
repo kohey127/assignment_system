@@ -1,0 +1,257 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+/* bootstrap使用のため以下追記 */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* font-awesome使用のため以下追記 */
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+// 初期化
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+// エラーメッセージ
+#error_explanation {
+  color: white;
+  padding-top: 0.5px;
+  background-color: red;
+  width: 75%;
+  border-radius: 5px;
+  margin: 30px auto;
+  text-align: center;
+  h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px;
+  }
+  ul {
+    padding-left: 5%;
+    text-align: left;
+    color: black;
+    background-color: white;
+    display: inline-block;
+    width: 98%;
+    padding: 30px 70px;
+  }
+}
+
+.field_with_errors {
+  display: inline-block;
+  input,
+  textarea {
+    border: 1px solid red;
+  }
+}
+
+// flashメッセージ
+.alert {
+  width: 90%;
+  margin: 0 auto 20px;
+}
+
+// 全体
+body {
+  font-size: 14px;
+  color: #656565;
+  letter-spacing: 0.1em;
+  line-height: 1.8em;
+  font-weight: normal;
+  color: #797979;
+  background-color: #eaeaea;
+  font-family: 'Ruda', "Noto Sans Japanese", "Noto Sans", sans-serif;
+  font-size: 13px;
+}
+
+main {
+  width: 90%;
+  margin: 100px auto 50px;
+}
+
+.nothing_sentence {
+  text-align: center;
+}
+
+textarea, input {
+  padding-left: 5px;
+  border-radius: 5px;
+  border: solid 1px;
+}
+
+.month_form {
+  width: 240px;
+  line-height: 25px;
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+.text_form {
+  width: 240px;
+  height: 30px;
+}
+
+// ヘッダ
+header {
+  background-color: #22242a;;
+  color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  .header_content {
+    display: flex;
+    justify-content: space-between;
+    .logo a {
+      background-image: image-url("logo.jpg");
+      background-size: cover;
+      display: block;
+      width: 200px;
+      height: 70px;
+      span {
+        visibility: hidden;
+      }
+    }
+    .logo a:hover {
+      opacity: 0.9;
+    }
+    .welcome_header {
+      margin: auto;
+      .welcome_header_content {
+        margin: auto 0;
+        text-align: center;
+      }
+    }
+    .nav_menu {
+      ul {
+        display: flex;
+        justify-content: space-between;
+        list-style: none;
+        margin: 0;
+        height: 70px;
+        li {
+          margin: 20px;
+          a {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ログイン画面
+.inner {
+  text-align: center;
+  .login_form {
+    margin-top: 25px;  
+  }
+}
+
+// 固定タイトル
+.icon::before {
+  content: "";
+  padding-right: 10px;
+  border-left: 7px solid #4ECDC4;
+}
+.icon {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 70px;
+  z-index: 50;
+  padding: 10px 0;
+  background-color: #eaeaea;
+}
+
+// 固定背景
+.article_wrap {
+  background-color: white;
+  width: 600px;
+  height: 450px;
+  margin: 0 auto;
+  padding: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 3px grey;
+  padding: 60px;
+}
+
+// 固定ボタン
+.btn_blue_green {
+  background: #4ECDC4;
+  padding: 12px 0;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  width: 130px;
+}
+.btn_blue_green:hover {
+  background: #1ca59e;
+  color: #fff;
+}
+
+// 案件新規作成画面
+.assign_form {
+  font-size: 13px;
+  margin-left: 15%;
+  form {
+    display: inline-block;
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 2px;
+    table {
+      tbody {
+        tr {
+          margin-bottom: 10px;
+          td {
+            padding-top: 10px;
+          }
+          td:nth-child(2) {
+            padding-left: 60px;
+          }
+        }
+      }
+    }
+    .btn_wrap {
+      text-align: center;
+      margin: 30px auto;
+    }
+  }
+}
