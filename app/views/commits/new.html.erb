@@ -1,3 +1,77 @@
-<% provide(:title, '稼働率新規作成') %>
-<h1>Commits#new</h1>
-<p>Find me in app/views/commits/new.html.erb</p>
+<% if @commit.present? %>
+  <% provide(:title, '稼働率新規作成') %>
+  <% action = new %>
+  <h2 class="icon">稼働率新規作成</h2>
+<% else %>
+  <% provide(:title, '稼働率編集') %>
+  <% action = edit %>
+  <h2 class="icon">稼働率編集</h2>
+<% end %>
+
+<% provide(:title, '案件詳細') %>
+<h2 class="icon">案件詳細</h2>
+<div class="assign_form">
+  <%= render 'layouts/error_messages', resource: @project %>
+  <table>
+    <tr>
+      <td>案件名</td>
+      <td><%= @project.name %></td>
+    </tr>
+    <tr>
+      <td>案件情報</td>
+      <td><%= @project.information %></td>
+    </tr>
+    <tr>
+      <td>開始予定日</td>
+      <td><%= @project.scheduled_start_date %></td>
+    </tr>
+    <tr>
+      <td>完了予定日</td>
+      <td><%= @project.scheduled_finish_date %></td>
+    </tr>
+  </table>
+  <div class="btn_wrap">
+    <%= link_to "編集する", edit_project_path, :class => "btn_blue_green" %>
+    <%= link_to "削除する", project_path(@project.id), method: :delete, data: { confirm: "本当に削除してもよろしいですか?" }, :class => "btn_blue_green" %>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="assign_form">
+  <%= form_with(model: @project, url: projects_path, method: :post, local: true) do |f| %>
+    <%= render 'layouts/error_messages', resource: @project %>
+    <table>
+      <tr>
+        <td>案件名</td>
+        <td>
+          <%= f.text_field :name, :class => "text_form" %>
+        </td>
+      </tr>
+      <tr>
+        <td>案件情報</td>
+        <td>
+          <%= f.text_area :information, rows: 10, cols: 50 %>
+        </td>
+      </tr>
+      <tr>
+        <td>開始予定日</td>
+        <td>
+          <%= f.date_field :scheduled_start_date, :class => "month_form" %>
+        </td>
+      </tr>
+      <tr>
+        <td>完了予定日</td>
+        <td>
+          <%= f.date_field :scheduled_finish_date, :class => "month_form" %>
+        </td>
+      </tr>
+    </table>
+    <div class="btn_wrap">
+      <%= f.submit "作成する", :class => "btn_blue_green" %>
+    </div>
+  <% end %>
+</div>

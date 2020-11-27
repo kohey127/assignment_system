@@ -1,3 +1,36 @@
 <% provide(:title, '稼働率詳細') %>
-<h1>Commits#show</h1>
-<p>Find me in app/views/commits/show.html.erb</p>
+
+<h2 class="icon"><%= @year %>年度 <%= @month %>月 稼働率詳細</h2>
+<div class="index_table_wrap">
+	<table class="assign_index_table">
+		<thead>
+			<tr>
+				<th>社員ID</th>
+				<th>社員名</th>
+				<% @projects.each do |project| %>
+					<th>
+						<%= link_to project.name, new_commit_path(:target_project => project.id, :target_year => @year, :target_month => @month) %>
+					</th>
+				<% end %>
+				<th>合計</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @employees.each do |employee| %>
+				<!--各社員の月別の稼働率合計を算出する変数に初期値を設定-->
+			  	<% month_commit_sum = 0 %>
+				<tr>
+					<td><%= employee.employee_id %></td>
+					<td><%= link_to employee.name, employee_path(employee.id) %></td>
+					<% @projects.each do |project| %>
+					  <td>
+					  	<%= employee.how_commit_detail(@year, @month, project) %> %
+					  	<% month_commit_sum += employee.how_commit_detail(@year, @month, project).to_i %>
+					  </td>
+      				<% end %>
+      				<td><%= month_commit_sum.to_s %> %</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

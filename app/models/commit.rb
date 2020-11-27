@@ -4,4 +4,5 @@ class Commit < ApplicationRecord
   
   validates :target_month, presence: true
   validates :commit_rate, presence: true
+  
 end

@@ -1,6 +1,14 @@
 <% provide(:title, 'トップ') %>
+<% month = [4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3] %>
+<% if @target_year.blank? %>
+	<% year = (Date.today << 3).year %>
+<% else %>
+	<% year = @target_year %>
+<% end %>
+<div><%= link_to "#{year.to_i - 1}", root_path(:target_year => year.to_i - 1) %></div>
+<div><%= year %>年度</div>
+<div><%= link_to "#{year.to_i + 1}", root_path(:target_year => year.to_i + 1) %></div>
 
-<% provide(:title, '案件一覧') %>
 <h2 class="icon">稼働率空き状況推移</h2>
 
 <h2 class="icon">社員別稼働率</h2>
@@ -10,18 +18,11 @@
 			<tr>
 				<th>社員ID</th>
 				<th>社員名</th>
-				<th>4月</th>
-				<th>5月</th>
-				<th>6月</th>
-				<th>7月</th>
-				<th>8月</th>
-				<th>9月</th>
-				<th>10月</th>
-				<th>11月</th>
-				<th>12月</th>
-				<th>1月</th>
-				<th>2月</th>
-				<th>3月</th>
+				<% 12.times do |i| %>
+					<th>
+						<%= link_to "#{month[i]}月", commit_path(month[i], :target_year => year ) %>
+					</th>
+				<% end %>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,7 +31,7 @@
 					<td><%= employee.employee_id %></td>
 					<td><%= link_to employee.name, employee_path(employee.id) %></td>
 					<% 12.times do |i| %>
-					  <td><% employee.how_commit(i) %></td>
+					  <td><%= employee.how_commit(month[i], year) %></td>
       				<% end %>
 				</tr>
 			<% end %>
