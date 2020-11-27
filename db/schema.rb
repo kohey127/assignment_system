@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_211540) do
     t.text "information"
     t.date "scheduled_start_date", null: false
     t.date "scheduled_finish_date", null: false
-    t.integer "status", default: 1, null: false
+    t.integer "status", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

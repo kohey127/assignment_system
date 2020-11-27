@@ -1,3 +1,35 @@
 <% provide(:title, '社員一覧') %>
-<h1>Employees#index</h1>
-<p>Find me in app/views/employees/index.html.erb</p>
+<h2 class="icon">社員一覧</h2>
+<div class="index_table_wrap">
+	<div class="index_table_btn_wrap">
+		<%= link_to "新規社員作成", new_employee_path, :class => "btn_blue_green" %>
+	</div>
+	<table class="assign_index_table">
+		<thead>
+			<tr>
+				<th>社員名</th>
+				<th>社員ID</th>
+				<th>部署名</th>
+				<th>グレード</th>
+				<th>ステータス</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @employees.each do |employee| %>
+				<tr>
+					<td><%= link_to employee.name, employee_path(employee.id) %></td>
+					<td><%= employee.employee_id %></td>
+					<td><%= employee.department.name %></td>
+					<td><%= employee.grade.name %></td>
+					<td>
+            <% if employee.is_active == true %>
+              <%= link_to "無効化する", employee_update_status_path(employee.id, :status => 'close'), method: :patch %>
+            <% else %>
+              <%= link_to "有効化する", employee_update_status_path(employee.id, :status => 'open'), method: :patch %>
+            <% end %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

@@ -1,3 +1,29 @@
 <% provide(:title, '案件一覧') %>
-<h1>Projects#index</h1>
-<p>Find me in app/views/projects/index.html.erb</p>
+<h2 class="icon">案件一覧</h2>
+<div class="index_table_wrap">
+	<div class="index_table_btn_wrap">
+		<%= link_to "新規案件作成", new_project_path, :class => "btn_blue_green" %>
+	</div>
+	<table class="assign_index_table">
+		<thead>
+			<tr>
+				<th>案件名</th>
+				<th>開始予定日</th>
+				<th>完了予定日</th>
+				<th>ステータス</th>
+				<th>アサイン人数</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @projects.each do |project| %>
+				<tr>
+					<td><%= link_to project.name, project_path(project.id) %></td>
+					<td><%= project.scheduled_start_date.strftime("%Y/%m") %></td>
+					<td><%= project.scheduled_finish_date.strftime("%Y/%m") %></td>
+					<td><%= project.status_i18n %></td>
+					<td>アサイン人数</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

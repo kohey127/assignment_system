@@ -5,7 +5,7 @@ class CreateProjects < ActiveRecord::Migration[6.0]
       t.text :information
       t.date :scheduled_start_date, null: false
       t.date :scheduled_finish_date, null: false
-      t.integer	:status, null: false, default: true
+      t.integer	:status, null: false
 
       t.timestamps
     end

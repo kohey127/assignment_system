@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+if Rails.env.production?
+  ("A"..."D").map {|c| Grade.create!(name: c )}
+  Department.create!(name: "BizDev")
+  Department.create!(name: "コンサルティング")
+  Manager.create!(name: "管理者", email: "manager@sample.com", password: "p@ssw0rd") 
+end

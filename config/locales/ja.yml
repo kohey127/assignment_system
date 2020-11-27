@@ -1,0 +1,81 @@
+ja:
+  enums:
+    project:
+      status:
+        preparation: 事前調整中
+        failure: 失注
+        ongoing: 進行中
+        done: 完了
+  activerecord:
+    models:
+      commit: 稼働
+      department: 部署
+      employee: 社員
+      grade: グレード
+      manager: 管理者
+      project: 案件
+    attributes:
+      commit:
+        id: ID      
+        target_month: 自己紹介
+        commit_rate: 稼働率
+        created_at: 登録日時
+        updated_at: 更新日時
+      department:
+        id: ID
+        name: 部署
+        created_at: 登録日時
+        updated_at: 更新日時
+      employee:
+        id: ID
+        name: 社員名
+        employee_id: 社員ID
+        department: 部署
+        grade: グレード
+        information: 社員情報
+        is_active: 有効状態
+        created_at: 登録日時
+        updated_at: 更新日時
+      grade:
+        id: ID
+        name: グレード
+        created_at: 登録日時
+        updated_at: 更新日時
+      manager:
+        id: ID
+        name: 名前
+        email: メールアドレス
+        created_at: 登録日時
+        updated_at: 更新日時
+      project:
+        id: ID
+        name: 案件名
+        information: 案件情報
+        scheduled_start_date: 開始予定日
+        scheduled_finish_date: 完了予定日
+        status: 案件ステータス
+        created_at: 登録日時
+        updated_at: 更新日時
+  devise:
+    failure:
+      already_authenticated: "既にログイン済みです。"
+      # inactive: "Your account is not activated yet."
+      invalid: "メールアドレスまたはパスワードが正しくありません。"
+      not_found_in_database: "メールアドレスまたはパスワードが正しくありません。"
+      # timeout: "Your session expired. Please sign in again to continue."
+      unauthenticated: "続けるにはログインが必要です。"
+    registrations:
+      signed_up: "会員登録が完了しました。ようこそShexpへ！"
+      updated: "パスワードの更新が完了しました。"
+    sessions:
+      signed_in: "ログインが完了しました。"
+      signed_out: "ログアウトが完了しました。"
+      already_signed_out: "ログアウトが完了しました。"
+  errors:
+    messages:
+      already_confirmed: "メールアドレスは既に登録されています。"
+      # not_found: "not found"
+      # not_locked: "was not locked"
+      not_saved: 
+        one: "エラーが発生しました。以下ご確認お願いいたします。"
+        other: "エラーが発生しました。以下ご確認お願いいたします。"
