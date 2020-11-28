@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_211540) do
   create_table "commits", force: :cascade do |t|
     t.integer "employee_id", null: false
     t.integer "project_id", null: false
-    t.date "target_month", null: false
+    t.string "target_month", null: false
     t.integer "commit_rate", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

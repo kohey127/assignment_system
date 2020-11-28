@@ -18,7 +18,7 @@ class Employee < ApplicationRecord
     target = year + i
     
     if Commit.where(employee_id: self.id, target_month: target).present?
-      Commit.where(employee_id: self.id, target_month: target).pluck(:commit_rate).sum
+      Commit.where(employee_id: self.id, target_month: target).group(:project_id).pluck(:commit_rate).sum
     else
       "-"
     end
@@ -33,8 +33,8 @@ class Employee < ApplicationRecord
     
     target = year + month
     
-    if Commit.where(employee_id: self.id, target_month: target, project_id: project.id).present?
-      Commit.where(employee_id: self.id, target_month: target, project_id: project.id).commit_rate
+    if Commit.find_by(employee_id: self.id, target_month: target, project_id: project.id).present?
+      Commit.find_by(employee_id: self.id, target_month: target, project_id: project.id).commit_rate
     else
       "-"
     end

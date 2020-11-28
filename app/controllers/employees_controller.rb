@@ -38,7 +38,6 @@ class EmployeesController < ApplicationController
   end
 
   def status_update
-    binding.pry
     employee = Employee.find(params[:employee_id])
     case params[:status]
     when "open"
