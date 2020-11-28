@@ -1,16 +1,11 @@
 <% provide(:title, 'トップ') %>
-<% month = [4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3] %>
-<% if @target_year.blank? %>
-	<% year = (Date.today << 3).year %>
-<% else %>
-	<% year = @target_year %>
-<% end %>
-<div><%= link_to "#{year.to_i - 1}", root_path(:target_year => year.to_i - 1) %></div>
-<div><%= year %>年度</div>
-<div><%= link_to "#{year.to_i + 1}", root_path(:target_year => year.to_i + 1) %></div>
+<div><%= link_to "#{@target_year.to_i - 1}年度", root_path(:target_year => @target_year.to_i - 1) %></div>
+<div><%= @target_year %>年度</div>
+<div><%= link_to "#{@target_year.to_i + 1}年度", root_path(:target_year => @target_year.to_i + 1) %></div>
 
 <h2 class="icon">稼働率空き状況推移</h2>
-
+	<%= line_chart @graph_data, xtitle: "月名", ytitle: "% / 0.01人月", width: "90%" %>
+	
 <h2 class="icon">社員別稼働率</h2>
 <div class="index_table_wrap">
 	<table class="assign_index_table">
@@ -20,12 +15,12 @@
 				<th>社員名</th>
 				<% 9.times do |i| %>
 					<th>
-						<%= link_to "#{month[i]}月", commit_path(month[i], :target_year => year ) %>
+						<%= link_to "#{@month[i]}月", commit_path(@month[i], :target_year => @target_year ) %>
 					</th>
 				<% end %>
 				<% 3.times do |i| %>
 					<th>
-						<%= link_to "#{month[i + 9]}月", commit_path(month[i + 9], :target_year => year.to_i + 1 ) %>
+						<%= link_to "#{@month[i + 9]}月", commit_path(@month[i + 9], :target_year => @target_year.to_i + 1 ) %>
 					</th>
 				<% end %>
 			</tr>
@@ -36,10 +31,10 @@
 					<td><%= employee.employee_id %></td>
 					<td><%= link_to employee.name, employee_path(employee.id) %></td>
 					<% 9.times do |i| %>
-					  <td><%= employee.how_commit(month[i], year) %> % </td>
+					  <td><%= employee.how_commit(@month[i], @target_year) %> % </td>
   				<% end %>
 					<% 3.times do |i| %>
-					  <td><%= employee.how_commit(month[i + 9], year.to_i + 1) %> % </td>
+					  <td><%= employee.how_commit(@month[i + 9], @target_year.to_i + 1) %> % </td>
   				<% end %>
 				</tr>
 			<% end %>

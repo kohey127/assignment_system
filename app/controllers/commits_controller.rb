@@ -5,17 +5,51 @@ class CommitsController < ApplicationController
     @employees = Employee.only_active
     if params[:target_year].present?
       @target_year = params[:target_year]
+    else
+      @target_year = (Date.today << 3).year
+    end
+    # ビューで使用する月データ
+    @month = [4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3]
+    
+    # グラフ作成
+    # 最終的に表示するグラフの配列を定義
+    @target_months = []
+    # グラフの横軸を作成するために年度月の配列を定義
+    @months = ["04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03"]
+    # 年度表示するため、4~12月と、1~3月で処理を分岐
+    # 4~12月
+    9.times do |i|
+      @target_months << @target_year.to_s + @months[i]
+    end
+    # 1~3月
+    3.times do |i|
+      @target_months << (@target_year.to_i + 1).to_s + @months[i + 9]
+    end
+    # プロジェクト、社員、対象月の3キーを主キーとする、作成日が最新のものを取得(Commitモデルに定義したスコープで最新が取れる)
+    commits = Commit.group(:project_id, :employee_id, :target_month)
+    # その中で、案件が事前調整中、進行中のものを取得
+    
+    # グラフデータを格納する配列を定義
+    @graph_data = []
+    # グラフの横軸の月数(YYYYMM)の配列を回す
+    @target_months.each do |month|
+      # 稼働率の合計値を格納する変数を定義
+      total = 0
+      # 横軸の月名と一致するデータを回し、稼働率を合計
+      commits.where(target_month: month).each do |commit|
+        total += commit.commit_rate
+      end
+      # 取得したデータをグラフ用に整形
+      month = month.slice(2, 4).insert(2, "年") << "月"
+      total = (Employee.only_active.count) * 100 - total
+      # データを保存
+      @graph_data << [month, total]
     end
   end
 
   def show
     @year = params[:target_year]
     @month = params[:id]
-    # target_month_start_time = month_start_time(@year, @month).in_time_zone
-    # target_month_finish_time = next_month_start_time(@year, @month).in_time_zone - 1
-    # # 「対象月の終わりよりも、開始予定日が前である」かつ「対象月の始まりよりも、終了予定日が後である」案件を取得
-    # @projects = Project.only_active.where("scheduled_start_date <= ? AND scheduled_finish_date >= ?", target_month_finish_time, target_month_start_time)
-    
     @employees = Employee.only_active
     @projects = target_projects(@year, @month)
   end
@@ -26,11 +60,12 @@ class CommitsController < ApplicationController
     @month = params[:target_month]
     @target_month = make_target_month(@year, @month)
     @commit = Commit.new
+    # プロジェクトの開始予定日と完了予定日の間に該当する月名(YYYYMM)を重複なく取得
     @term = (@project.scheduled_start_date..@project.scheduled_finish_date).to_a.map {|a| a.strftime("%Y/%m")}.uniq
   end
 
   def create
-    # 手動バリデーション
+    # 手動バリデーション（テーブル名CommitがSQLの予約語でありバリデーション使えないため、暫定処置）
     error_flag = 0
     if params[:target_param].blank?
       flash[:danger] = "対象期間を選択してください"
@@ -42,10 +77,8 @@ class CommitsController < ApplicationController
       error_flag = 1
     end
     
-    binding.pry
-    
-    if params[:commit_rate].blank? || params[:commit_rate].to_i < 0 || params[:commit_rate].to_i > 100
-      flash[:danger] = "稼働率は0～100の範囲で正しく入力してください"
+    if params[:commit_rate].blank? || params[:commit_rate].to_i < 1 || params[:commit_rate].to_i > 100
+      flash[:danger] = "稼働率は1～100の範囲で正しく入力してください"
       error_flag = 1
     end
     
@@ -53,15 +86,17 @@ class CommitsController < ApplicationController
       redirect_to request.referer and return
     end
     
+    # 稼働率作成処理ここから
     case params[:target_param]
+    # この月だけ追加するとき
     when "0"
       commit = Commit.new
       commit.employee_id = params[:employee_id]
       commit.project_id = params[:project_id]
       commit.commit_rate = params[:commit_rate]
       commit.target_month = params[:target_month]
-    binding.pry
       commit.save
+    # 全期間に追加するとき
     when "1"
       target_months = params[:target_months].split
       target_months.count.times do |i|
@@ -94,24 +129,6 @@ class CommitsController < ApplicationController
     end
     year + month
   end
-  
-  # def month_start_time(year, month)
-  #   year = year.to_s
-  #   month = month.to_s
-  #   if month.length == 1
-  #     month = "0" + month
-  #   end
-  #   "#{year}-#{month}-01"
-  # end
-  
-  # def next_month_start_time(year, month)
-  #   year = year.to_s
-  #   month = (month.to_i + 1).to_s
-  #   if month.length == 1
-  #     month = "0" + month
-  #   end
-  #   "#{year}-#{month}-01"
-  # end
   
   # 対象期間に含まれるプロジェクトを取得する
   def target_projects(year, month)

@@ -41,3 +41,4 @@ gem 'jquery-rails'
 gem 'rails-i18n'
 gem 'enum_help'
 gem 'font-awesome-sass'
+gem "chartkick"
