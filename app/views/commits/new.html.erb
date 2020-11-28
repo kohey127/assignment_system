@@ -1,77 +1,104 @@
-<% if @commit.present? %>
-  <% provide(:title, '稼働率新規作成') %>
-  <% action = new %>
-  <h2 class="icon">稼働率新規作成</h2>
-<% else %>
-  <% provide(:title, '稼働率編集') %>
-  <% action = edit %>
-  <h2 class="icon">稼働率編集</h2>
-<% end %>
+<% provide(:title, '稼働率編集') %>
+<h2 class="icon">稼働率編集（<%= @project.name %>）</h2>
 
-<% provide(:title, '案件詳細') %>
-<h2 class="icon">案件詳細</h2>
-<div class="assign_form">
-  <%= render 'layouts/error_messages', resource: @project %>
-  <table>
-    <tr>
-      <td>案件名</td>
-      <td><%= @project.name %></td>
-    </tr>
-    <tr>
-      <td>案件情報</td>
-      <td><%= @project.information %></td>
-    </tr>
-    <tr>
-      <td>開始予定日</td>
-      <td><%= @project.scheduled_start_date %></td>
-    </tr>
-    <tr>
-      <td>完了予定日</td>
-      <td><%= @project.scheduled_finish_date %></td>
-    </tr>
-  </table>
-  <div class="btn_wrap">
-    <%= link_to "編集する", edit_project_path, :class => "btn_blue_green" %>
-    <%= link_to "削除する", project_path(@project.id), method: :delete, data: { confirm: "本当に削除してもよろしいですか?" }, :class => "btn_blue_green" %>
+<div class="commit_container">
+  <div class="commit_form">
+    <%= form_with(model: @commit, url: commits_path, method: :post, local: true) do |f| %>
+      <h3>＜担当社員新規登録＞</h3>
+      <div class="index_table_wrap">
+      	<table class="assign_index_table">
+          <%= render 'layouts/error_messages', resource: @commit %>
+            <tr>
+              <th>社員名</th>
+              <th>稼働率</th>
+            </tr>
+            <tr>
+              <td>
+                <%= select_tag 'employee_id', options_from_collection_for_select(Employee.all, :id, :name), prompt: "社員名を選択してください" %>
+              </td>
+              <td>
+                <%= number_field_tag 'commit_rate', max: 100, min: 1 %> %
+              </td>
+            </tr>
+          </table>
+          <h4>対象期間</h4>
+          <div class="assign_form">
+            <table>
+                <td><%= radio_button_tag :target_param, 0 %></td>
+                <td>
+                  この月（<%= @year %>年<%= @month %>月）
+                </td>
+              </tr>
+              <tr>
+                <td><%= radio_button_tag :target_param, 1 %></td>
+                </dd>
+                  全期間（<%= @term.first %> ～ <%= @term.last %>）を上記の条件で上書きする
+                </td>
+              </tr>
+              <tr>
+            </table>
+          </div>
+          <div class="btn_wrap">
+            <%= hidden_field_tag :target_month, @target_month %>
+            <%= hidden_field_tag :project_id, @project.id %>
+            <%= hidden_field_tag :target_months, @term %>
+            <%= f.submit "作成する", :class => "btn_blue_green" %>
+          </div>
+        </table>
+      </div>
+    <% end %>
+  </div>
+  <div class="project_information">
+    <h3>＜対象の案件詳細＞</h3>
+    <div class="index_table_wrap commit_project_information">
+    	<table class="assign_index_table">
+        <tr>
+          <td>案件名</td>
+          <td><%= @project.name %></td>
+        </tr>
+        <tr>
+          <td>案件情報</td>
+          <td><%= @project.information %></td>
+        </tr>
+        <tr>
+          <td>開始予定日</td>
+          <td><%= @project.scheduled_start_date %></td>
+        </tr>
+        <tr>
+          <td>完了予定日</td>
+          <td><%= @project.scheduled_finish_date %></td>
+        </tr>
+        <tr>
+          <td>状態</td>
+          <td><%= @project.status_i18n %></td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
 
-
-
-
-
-
-<div class="assign_form">
-  <%= form_with(model: @project, url: projects_path, method: :post, local: true) do |f| %>
-    <%= render 'layouts/error_messages', resource: @project %>
-    <table>
-      <tr>
-        <td>案件名</td>
-        <td>
-          <%= f.text_field :name, :class => "text_form" %>
-        </td>
-      </tr>
-      <tr>
-        <td>案件情報</td>
-        <td>
-          <%= f.text_area :information, rows: 10, cols: 50 %>
-        </td>
-      </tr>
-      <tr>
-        <td>開始予定日</td>
-        <td>
-          <%= f.date_field :scheduled_start_date, :class => "month_form" %>
-        </td>
-      </tr>
-      <tr>
-        <td>完了予定日</td>
-        <td>
-          <%= f.date_field :scheduled_finish_date, :class => "month_form" %>
-        </td>
-      </tr>
-    </table>
-    <div class="btn_wrap">
-      <%= f.submit "作成する", :class => "btn_blue_green" %>
-    </div>
-  <% end %>
+<h3>＜登録済み担当者情報(<%= @year %>年<%= @month %>月分)＞</h3>
+<div class="index_table_wrap">
+	<table class="assign_index_table">
+    <tr>
+      <th>社員ID</th>
+      <th>社員名</th>
+      <th>稼働率</th>
+    </tr>
+    <% if @project.commits.present? %>
+      <% @project.already_commits(@target_month).each do |commit| %>
+        <tr>
+          <td>
+            <%= commit.employee.employee_id %>
+          </td>
+          <td>
+            <%= commit.employee.name %>
+          </td>
+          <td>
+            <%= commit.commit_rate %>%
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
 </div>

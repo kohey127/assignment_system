@@ -279,3 +279,21 @@ header {
     }
   }
 }
+
+// 稼働率編集画面
+.commit_container {
+  display: flex;
+  justify-content: space-between;
+  .commit_project_information, .commit_form {
+    margin: 0;
+    max-with: 500px;
+  }
+  .commit_project_information {
+    margin-right: 30px;
+  }
+  .commit_form {
+    .assign_index_table {
+      margin: 20px;
+    }
+  }
+}
