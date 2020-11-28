@@ -31,10 +31,10 @@
 					<td><%= employee.employee_id %></td>
 					<td><%= link_to employee.name, employee_path(employee.id) %></td>
 					<% 9.times do |i| %>
-					  <td><%= employee.how_commit(@month[i], @target_year) %> % </td>
+					  <td><%= employee.how_commit_sum(@month[i], @target_year) %> % </td>
   				<% end %>
 					<% 3.times do |i| %>
-					  <td><%= employee.how_commit(@month[i + 9], @target_year.to_i + 1) %> % </td>
+					  <td><%= employee.how_commit_sum(@month[i + 9], @target_year.to_i + 1) %> % </td>
   				<% end %>
 				</tr>
 			<% end %>

@@ -25,10 +25,8 @@ class CommitsController < ApplicationController
     3.times do |i|
       @target_months << (@target_year.to_i + 1).to_s + @months[i + 9]
     end
-    # プロジェクト、社員、対象月の3キーを主キーとする、作成日が最新のものを取得(Commitモデルに定義したスコープで最新が取れる)
+    # プロジェクト、社員、対象月の3キーを主キーとする(重複なし)、作成日が最新のものを取得(Commitモデルに定義したスコープで最新が取れる)
     commits = Commit.group(:project_id, :employee_id, :target_month)
-    # その中で、案件が事前調整中、進行中のものを取得
-    
     # グラフデータを格納する配列を定義
     @graph_data = []
     # グラフの横軸の月数(YYYYMM)の配列を回す
@@ -37,12 +35,15 @@ class CommitsController < ApplicationController
       total = 0
       # 横軸の月名と一致するデータを回し、稼働率を合計
       commits.where(target_month: month).each do |commit|
-        total += commit.commit_rate
+        # その中で、案件が事前調整中、進行中のものを取得
+        if commit.project.status == "preparation" || commit.project.status == "ongoing"
+          total += commit.commit_rate
+        end
       end
       # 取得したデータをグラフ用に整形
       month = month.slice(2, 4).insert(2, "年") << "月"
       total = (Employee.only_active.count) * 100 - total
-      # データを保存
+      # データを配列に格納
       @graph_data << [month, total]
     end
   end
