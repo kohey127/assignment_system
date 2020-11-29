@@ -1,5 +1,11 @@
 <% provide(:title, '稼働率詳細') %>
 
+<% if @month == "1" || @month == "2" || @month == "3" %>
+	<%= link_to "<<戻る(#{@year.to_i - 1 }年度)", root_path(:target_year => @year.to_i - 1 ) %>
+<% else %>
+	<%= link_to "<<戻る(#{@year}年度)", root_path(:target_year => @year) %>
+<% end %>
+
 <h2 class="icon"><%= @year %>年 <%= @month %>月 稼働率詳細</h2>
 <div class="index_table_wrap">
 	<table class="assign_index_table">
@@ -18,17 +24,21 @@
 		<tbody>
 			<% @employees.each do |employee| %>
 				<!--各社員の月別の稼働率合計を算出する変数に初期値を設定-->
-			  	<% month_commit_sum = 0 %>
+		  	<% month_commit_sum = 0 %>
 				<tr>
 					<td><%= employee.employee_id %></td>
 					<td><%= link_to employee.name, employee_path(employee.id) %></td>
 					<% @projects.each do |project| %>
-					  <td>
-					  	<%= employee.how_commit_detail(@year, @month, project) %> %
-					  	<% month_commit_sum += employee.how_commit_detail(@year, @month, project).to_i %>
-					  </td>
-      				<% end %>
-      				<td><%= month_commit_sum.to_s %> %</td>
+						<td>
+							<%= employee.how_commit_detail(@year, @month, project) %> %
+							<% month_commit_sum += employee.how_commit_detail(@year, @month, project).to_i %>
+						</td>
+					<% end %>
+   				<% if month_commit_sum > 100 %>
+  					<td class="danger_rate"><%= month_commit_sum.to_s %> %</td>
+   				<% else %>
+   					<td><%= month_commit_sum.to_s %> %</td>
+   				<% end %>
 				</tr>
 			<% end %>
 		</tbody>

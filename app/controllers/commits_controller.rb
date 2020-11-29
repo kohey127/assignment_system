@@ -15,17 +15,17 @@ class CommitsController < ApplicationController
     # 最終的に表示するグラフの配列を定義
     @target_months = []
     # グラフの横軸を作成するために年度月の配列を定義
-    @months = ["04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03"]
+    months = ["04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03"]
     # 年度表示するため、4~12月と、1~3月で処理を分岐
     # 4~12月
     9.times do |i|
-      @target_months << @target_year.to_s + @months[i]
+      @target_months << @target_year.to_s + months[i]
     end
     # 1~3月
     3.times do |i|
-      @target_months << (@target_year.to_i + 1).to_s + @months[i + 9]
+      @target_months << (@target_year.to_i + 1).to_s + months[i + 9]
     end
-    # プロジェクト、社員、対象月の3キーを主キーとする(重複なし)、作成日が最新のものを取得(Commitモデルに定義したスコープで最新が取れる)
+    # プロジェクト、社員、対象月の3キーを主キーとする(重複なし)、作成日が最新の稼働率を取得(Commitモデルに定義したスコープで最新が取れる)
     commits = Commit.group(:project_id, :employee_id, :target_month)
     # グラフデータを格納する配列を定義
     @graph_data = []
@@ -35,14 +35,15 @@ class CommitsController < ApplicationController
       total = 0
       # 横軸の月名と一致するデータを回し、稼働率を合計
       commits.where(target_month: month).each do |commit|
-        # その中で、案件が事前調整中、進行中のものを取得
-        if commit.project.status == "preparation" || commit.project.status == "ongoing"
+        # その中で、社員が有効かつ、案件が事前調整中、進行中のものを取得
+        if commit.employee.is_active == true && (commit.project.status == "preparation" || commit.project.status == "ongoing")
           total += commit.commit_rate
         end
       end
       # 取得したデータをグラフ用に整形
       month = month.slice(2, 4).insert(2, "年") << "月"
-      total = (Employee.only_active.count) * 100 - total
+      total = (total / 100.to_f).round(2)
+      total = ((Employee.only_active.count) - total).round(2)
       # データを配列に格納
       @graph_data << [month, total]
     end
@@ -78,19 +79,18 @@ class CommitsController < ApplicationController
       error_flag = 1
     end
     
-    if params[:commit_rate].blank? || params[:commit_rate].to_i < 1 || params[:commit_rate].to_i > 100
-      flash[:danger] = "稼働率は1～100の範囲で正しく入力してください"
+    if params[:commit_rate].blank? || params[:commit_rate].to_i < 0 || params[:commit_rate].to_i > 100
+      flash[:danger] = "稼働率は0～100の範囲で正しく入力してください"
       error_flag = 1
     end
     
     if error_flag == 1
       redirect_to request.referer and return
     end
-    
     # 稼働率作成処理ここから
     case params[:target_param]
     # この月だけ追加するとき
-    when "0"
+    when "this_month"
       commit = Commit.new
       commit.employee_id = params[:employee_id]
       commit.project_id = params[:project_id]
@@ -98,7 +98,7 @@ class CommitsController < ApplicationController
       commit.target_month = params[:target_month]
       commit.save
     # 全期間に追加するとき
-    when "1"
+    when "all_month"
       target_months = params[:target_months].split
       target_months.count.times do |i|
         commit = Commit.new

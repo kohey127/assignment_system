@@ -1,12 +1,12 @@
 <% provide(:title, '稼働率編集') %>
-<h2 class="icon">稼働率編集（<%= @project.name %>）</h2>
-
+<%= link_to "<<戻る(#{@year}年#{@month}月)", commit_path(@month, :target_year => @year ) %>
+<h2 class="icon">稼働率編集（<%= @project.name %> / <%= @year %>年<%= @month %>月分）</h2>
 <div class="commit_container">
-  <div class="commit_form">
+  <div class="commit_form_container_wrap">
     <%= form_with(model: @commit, url: commits_path, method: :post, local: true) do |f| %>
-      <h3>＜担当社員新規登録＞</h3>
       <div class="index_table_wrap">
-      	<table class="assign_index_table">
+      <h3>＜担当社員新規登録＞</h3>
+      	<table class="assign_index_table commit_form_table">
           <%= render 'layouts/error_messages', resource: @commit %>
             <tr>
               <th>社員名</th>
@@ -14,25 +14,30 @@
             </tr>
             <tr>
               <td>
-                <%= select_tag 'employee_id', options_from_collection_for_select(Employee.all, :id, :name), prompt: "社員名を選択してください" %>
+                <%= select_tag 'employee_id', options_from_collection_for_select(Employee.only_active, :id, :name), prompt: "社員名を選択してください" %>
               </td>
               <td>
                 <%= number_field_tag 'commit_rate', max: 100, min: 1 %> %
               </td>
             </tr>
           </table>
-          <h4>対象期間</h4>
-          <div class="assign_form">
+          <h4 class="commit_target_sentence">対象期間</h4>
+          <div class="assign_form commit_form">
             <table>
-                <td><%= radio_button_tag :target_param, 0 %></td>
+              <tr>
                 <td>
-                  この月（<%= @year %>年<%= @month %>月）
+                  <%= radio_button_tag :target_param, :this_month, checked: true %>
+                </td>
+                <td>
+                  <%= label_tag :target_param, "この月（#{@year}年#{@month}月）を上記の条件で上書き登録する" %>
                 </td>
               </tr>
               <tr>
-                <td><%= radio_button_tag :target_param, 1 %></td>
-                </dd>
-                  全期間（<%= @term.first %> ～ <%= @term.last %>）を上記の条件で上書きする
+                <td>
+                  <%= radio_button_tag :target_param, :all_month %>
+                </td>
+                <td>
+                  <%= label_tag :target_param, "この案件の全期間（#{@term.first} ～ #{@term.last}）を上記の条件で上書き登録する" %>
                 </td>
               </tr>
               <tr>
@@ -42,16 +47,49 @@
             <%= hidden_field_tag :target_month, @target_month %>
             <%= hidden_field_tag :project_id, @project.id %>
             <%= hidden_field_tag :target_months, @term %>
-            <%= f.submit "作成する", :class => "btn_blue_green" %>
+            <%= f.submit "登録する", :class => "btn_blue_green" %>
           </div>
         </table>
       </div>
     <% end %>
   </div>
-  <div class="project_information">
-    <h3>＜対象の案件詳細＞</h3>
-    <div class="index_table_wrap commit_project_information">
-    	<table class="assign_index_table">
+  <div class="index_table_wrap aleady_commit_information_wrap">
+    <h3>＜登録済み担当者(<%= @year %>年<%= @month %>月分)＞</h3>
+    <% if @project.commits.present? %>
+    	<table class="assign_index_table aleady_commit_information">
+        <tr>
+          <th>社員ID</th>
+          <th>社員名</th>
+          <th>稼働率</th>
+        </tr>
+        <% @project.already_commits(@target_month).each do |commit| %>
+          <% if commit.employee.is_active == true %>
+            <tr>
+              <td>
+                <%= commit.employee.employee_id %>
+              </td>
+              <td>
+                <%= commit.employee.name %>
+              </td>
+              <td>
+                <%= commit.commit_rate %>%
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <% else %>
+      <div class="not_found">
+        <p>登録済み担当者はいません</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="project_information commit_project_information">
+  <div class="table_wrap">
+    <div class="table_shadow">
+    <h3>＜対象案件の詳細＞</h3>
+      <table>
         <tr>
           <td>案件名</td>
           <td><%= @project.name %></td>
@@ -69,7 +107,7 @@
           <td><%= @project.scheduled_finish_date %></td>
         </tr>
         <tr>
-          <td>状態</td>
+          <td>ステータス</td>
           <td><%= @project.status_i18n %></td>
         </tr>
       </table>
@@ -77,28 +115,3 @@
   </div>
 </div>
 
-<h3>＜登録済み担当者情報(<%= @year %>年<%= @month %>月分)＞</h3>
-<div class="index_table_wrap">
-	<table class="assign_index_table">
-    <tr>
-      <th>社員ID</th>
-      <th>社員名</th>
-      <th>稼働率</th>
-    </tr>
-    <% if @project.commits.present? %>
-      <% @project.already_commits(@target_month).each do |commit| %>
-        <tr>
-          <td>
-            <%= commit.employee.employee_id %>
-          </td>
-          <td>
-            <%= commit.employee.name %>
-          </td>
-          <td>
-            <%= commit.commit_rate %>%
-          </td>
-        </tr>
-      <% end %>
-    <% end %>
-  </table>
-</div>

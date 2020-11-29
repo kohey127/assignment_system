@@ -33,6 +33,7 @@ class Employee < ApplicationRecord
     end
   end
   
+  # 年、月、プロジェクト、社員の組み合わせで、すでに登録されている稼働率をする
   def how_commit_detail(year, month, project)
     month = month.to_s
     year = year.to_s

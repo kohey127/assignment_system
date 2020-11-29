@@ -21,7 +21,13 @@
 					<td><%= project.scheduled_start_date.strftime("%Y/%m") %></td>
 					<td><%= project.scheduled_finish_date.strftime("%Y/%m") %></td>
 					<td><%= project.status_i18n %></td>
-					<td>アサイン人数</td>
+					<td>
+						<% if project.status == "preparation" || project.status == "ongoing" %>
+							<%= project.commits.group(:employee_id).pluck(:employee_id).count %>
+						<% else %>
+							-
+						<% end %>
+					</td>
 				</tr>
 			<% end %>
 		</tbody>

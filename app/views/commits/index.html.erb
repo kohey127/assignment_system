@@ -1,12 +1,20 @@
 <% provide(:title, 'トップ') %>
-<div><%= link_to "#{@target_year.to_i - 1}年度", root_path(:target_year => @target_year.to_i - 1) %></div>
-<div><%= @target_year %>年度</div>
-<div><%= link_to "#{@target_year.to_i + 1}年度", root_path(:target_year => @target_year.to_i + 1) %></div>
+<div class="year_container">
+	<div>
+		<%= link_to "#{@target_year.to_i - 1}年度", root_path(:target_year => @target_year.to_i - 1) %>
+	</div>
+	<div class="viewing_year">
+		<%= @target_year %>年度
+	</div>
+	<div>
+		<%= link_to "#{@target_year.to_i + 1}年度", root_path(:target_year => @target_year.to_i + 1) %>
+	</div>
+</div>
 
-<h2 class="icon">稼働率空き状況推移</h2>
-	<%= line_chart @graph_data, xtitle: "月名", ytitle: "% / 0.01人月", width: "90%" %>
+<h2 class="icon">稼働率空き状況推移<small>（<%= @target_year %>年度）</small></h2>
+<%= line_chart @graph_data, xtitle: "月名", ytitle: "人月" %>
 	
-<h2 class="icon">社員別稼働率</h2>
+<h2 class="icon">社員別稼働率<small>（<%= @target_year %>年度）</small></h2>
 <div class="index_table_wrap">
 	<table class="assign_index_table">
 		<thead>
@@ -15,12 +23,36 @@
 				<th>社員名</th>
 				<% 9.times do |i| %>
 					<th>
-						<%= link_to "#{@month[i]}月", commit_path(@month[i], :target_year => @target_year ) %>
+						<!--この月の有効な案件の存在を確認-->
+						<% include_flag = 0 %>
+						<% Project.only_active.each do |project| %>
+							<% if project.include_target_months.include?(project.make_target_month(@target_year, @month[i])) %>
+								<% include_flag = 1 %>
+							<% end %>
+						<% end %>
+						<!--有効な案件が存在したときにリンク化-->
+						<% if include_flag == 1 %>
+							<%= link_to "#{@month[i]}月", commit_path(@month[i], :target_year => @target_year ) %>
+						<% else %>
+							<%= @month[i] %>月
+						<% end %>
 					</th>
 				<% end %>
 				<% 3.times do |i| %>
 					<th>
-						<%= link_to "#{@month[i + 9]}月", commit_path(@month[i + 9], :target_year => @target_year.to_i + 1 ) %>
+						<!--この月の有効な案件の存在を確認-->
+						<% include_flag = 0 %>
+						<% Project.only_active.each do |project| %>
+							<% if project.include_target_months.include?(project.make_target_month(@target_year.to_i + 1, @month[i + 9])) %>
+								<% include_flag = 1 %>
+							<% end %>
+						<% end %>
+						<!--有効な案件が存在したときにリンク化-->
+						<% if include_flag == 1 %>
+							<%= link_to "#{@month[i + 9]}月", commit_path(@month[i + 9], :target_year => @target_year.to_i + 1 ) %>
+						<% else %>
+							<%= @month[i + 9] %>月
+						<% end %>
 					</th>
 				<% end %>
 			</tr>
@@ -30,12 +62,26 @@
 				<tr>
 					<td><%= employee.employee_id %></td>
 					<td><%= link_to employee.name, employee_path(employee.id) %></td>
+					<!--4~12月-->
 					<% 9.times do |i| %>
-					  <td><%= employee.how_commit_sum(@month[i], @target_year) %> % </td>
+						<!--100%以上の時は文字の色を赤くする-->
+						<% rate = employee.how_commit_sum(@month[i], @target_year) %>
+						<% if rate.to_i > 100 %>
+					  	<td class="danger_rate"><%= rate %> % </td>
+					  <% else %>
+					  	<td><%= rate %> % </td>
+					  <% end %>
   				<% end %>
+					<!--1~3月-->
 					<% 3.times do |i| %>
-					  <td><%= employee.how_commit_sum(@month[i + 9], @target_year.to_i + 1) %> % </td>
-  				<% end %>
+						<!--100%以上の時は文字の色を赤くする-->
+						<% rate = employee.how_commit_sum(@month[i + 9], @target_year.to_i + 1) %>
+						<% if rate.to_i > 100 %>
+							<td class="danger_rate"><%= rate %> % </td>
+						<% else %>
+							<td><%= rate %> % </td>
+						<% end %>
+ 					<% end %>
 				</tr>
 			<% end %>
 		</tbody>

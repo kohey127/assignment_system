@@ -25,7 +25,7 @@
             <% if employee.is_active == true %>
               <%= link_to "無効化する", employee_update_status_path(employee.id, :status => 'close'), method: :patch %>
             <% else %>
-              <%= link_to "有効化する", employee_update_status_path(employee.id, :status => 'open'), method: :patch %>
+              <%= link_to "有効化する", employee_update_status_path(employee.id, :status => 'open'), method: :patch, class: "up_link" %>
             <% end %>
 					</td>
 				</tr>
