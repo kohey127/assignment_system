@@ -114,6 +114,9 @@ textarea, input {
   font-weight: bold;
 }
 
+// ロゴ
+
+
 // ヘッダ
 header {
   background-color: #22242a;;
@@ -125,19 +128,34 @@ header {
   .header_content {
     display: flex;
     justify-content: space-between;
-    .logo a {
-      background-image: image-url("logo.jpg");
-      background-size: cover;
-      display: block;
-      width: 200px;
-      height: 70px;
-      span {
-        visibility: hidden;
+    a {
+      color: white;
+      h1 {
+        line-height: 20px;
+        margin-left: 10px;
+        p {
+          font-size: 10px;
+          margin-left: 10px;
+        }
       }
     }
-    .logo a:hover {
-      opacity: 0.9;
+    a:hover {
+      color: gray;
+      text-decoration: none;
     }
+    // .logo a {
+    //   background-image: image-url("logo.jpg");
+    //   background-size: cover;
+    //   display: block;
+    //   width: 200px;
+    //   height: 70px;
+    //   span {
+    //     visibility: hidden;
+    //   }
+    // }
+    // .logo a:hover {
+    //   opacity: 0.9;
+    // }
     .welcome_header {
       margin: auto;
       .welcome_header_content {

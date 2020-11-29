@@ -35,8 +35,8 @@ class CommitsController < ApplicationController
       total = 0
       # 横軸の月名と一致するデータを回し、稼働率を合計
       commits.where(target_month: month).each do |commit|
-        # その中で、社員が有効かつ、案件が事前調整中、進行中のものを取得
-        if commit.employee.is_active == true && (commit.project.status == "preparation" || commit.project.status == "ongoing")
+        # その中で、社員が有効かつ、案件が事前調整中か進行中かつ、稼働率の対象月が案件の予定期間に含まれている(案件の期間を変更されていない)のものを取得
+        if commit.employee.is_active == true && (commit.project.status == "preparation" || commit.project.status == "ongoing") && commit.project.include_target_months.include?(month) 
           total += commit.commit_rate
         end
       end
@@ -140,10 +140,10 @@ class CommitsController < ApplicationController
     ids = []
     projects.each do |project|
       # 案件の開始予定日と終了予定日の範囲に含まれる配列を取得する
-      terms = (project.scheduled_start_date..project.scheduled_finish_date).to_a.map {|a| a.strftime("%Y/%m")}.uniq
+      terms = (project.scheduled_start_date..project.scheduled_finish_date).to_a.map {|a| a.strftime("%Y%m")}.uniq
       # target_monthとtermsが一致した案件をresultに格納する
       terms.count.times do |i|
-        if terms[i].delete("/") == target_month
+        if terms[i] == target_month
           ids << project.id
         end
       end

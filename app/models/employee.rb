@@ -22,8 +22,8 @@ class Employee < ApplicationRecord
     if Commit.where(employee_id: self.id, target_month: target).present?
       # Commitテーブルから社員の各プロジェクトの最新データを取得(commitモデルのスコープにより最新データが取得できる)
       Commit.where(employee_id: self.id, target_month: target).group(:project_id).each do |commit|
-        # その中で、案件が事前調整中、進行中のものを取得し、稼働率を合計
-        if commit.project.status == "preparation" || commit.project.status == "ongoing"
+        # その中で、案件が対象期間に含まれる、かつ事前調整中、進行中のものを取得し、稼働率を合計
+        if commit.project.include_target_months.include?(target) && (commit.project.status == "preparation" || commit.project.status == "ongoing")
           total += commit.commit_rate
         end
       end
@@ -33,7 +33,7 @@ class Employee < ApplicationRecord
     end
   end
   
-  # 年、月、プロジェクト、社員の組み合わせで、すでに登録されている稼働率をする
+  # 年、月、プロジェクト、社員の組み合わせで、すでに登録されている稼働率を取得する
   def how_commit_detail(year, month, project)
     month = month.to_s
     year = year.to_s

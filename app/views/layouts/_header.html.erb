@@ -1,11 +1,16 @@
 <header>
   <% if manager_signed_in? %>
     <div class="header_content">
-      <div class="logo">
+      <div>
         <a href="/">
-          <span>トップページ</span>
+          <h1>ASSIGN<br/><p><small>Management System</small></p></h1>
         </a>
       </div>
+      <!--<div class="logo">-->
+      <!--  <a href="/">-->
+      <!--    <span>トップページ</span>-->
+      <!--  </a>-->
+      <!--</div>-->
       <div class="welcome_header">
         <p class="welcome_header_content">
           ようこそ、<%= current_manager.name %>さん!
