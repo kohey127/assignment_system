@@ -8,7 +8,7 @@ class Employee < ApplicationRecord
   
   scope :only_active, -> { where(is_active: true) }
   
-  def how_commit(i, year)
+  def how_commit_sum(i, year)
     i = i.to_s
     year = year.to_s
     if i.length == 1
@@ -16,14 +16,24 @@ class Employee < ApplicationRecord
     end
     
     target = year + i
-    
+    # 合計稼働率を取得するための変数を定義
+    total = 0
+    # 社員情報と対象月の組み合わせのデータがCommitテーブルに存在するとき
     if Commit.where(employee_id: self.id, target_month: target).present?
-      Commit.where(employee_id: self.id, target_month: target).group(:project_id).pluck(:commit_rate).sum
+      # Commitテーブルから社員の各プロジェクトの最新データを取得(commitモデルのスコープにより最新データが取得できる)
+      Commit.where(employee_id: self.id, target_month: target).group(:project_id).each do |commit|
+        # その中で、案件が事前調整中、進行中のものを取得し、稼働率を合計
+        if commit.project.status == "preparation" || commit.project.status == "ongoing"
+          total += commit.commit_rate
+        end
+      end
+      total
     else
       "-"
     end
   end
   
+  # 年、月、プロジェクト、社員の組み合わせで、すでに登録されている稼働率をする
   def how_commit_detail(year, month, project)
     month = month.to_s
     year = year.to_s

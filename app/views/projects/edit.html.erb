@@ -17,6 +17,12 @@
         </td>
       </tr>
       <tr>
+        <td>ステータス</td>
+        <td>
+          <%= f.select :status, Project.statuses.keys.map {|k| [I18n.t("enums.project.status.#{k}"), k]}, include_blank: '選択してください' %>
+        </td>
+      </tr>
+      <tr>
         <td>開始予定日</td>
         <td>
           <%= f.date_field :scheduled_start_date, :class => "month_form" %>
