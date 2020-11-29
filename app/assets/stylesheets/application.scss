@@ -109,6 +109,11 @@ textarea, input {
   height: 30px;
 }
 
+.danger_rate {
+  color: palevioletred;
+  font-weight: bold;
+}
+
 // ヘッダ
 header {
   background-color: #22242a;;
@@ -227,6 +232,57 @@ header {
   text-decoration: none;
 }
 
+// 固定テーブル
+.table_wrap {
+  width: 90%;
+  text-align: center;
+  .table_shadow {
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 2px;
+    table {
+      border-collapse: collapse;
+      border: solid 2px gray;
+      margin: 40px;
+      width: 90%;
+      tr {
+        th, td {
+          text-align: center;
+          padding: 5px;
+          border: dashed 1px gray;
+        }
+        td:nth-child(1) {
+          width: 200px;
+        }
+      }
+    }
+    .btn_wrap {
+      a {
+        margin: 0 20px 20px;
+      }
+    }
+  }
+}
+
+// トップ
+.year_container {
+  display: flex;
+  justify-content: space-around;
+  .viewing_year {
+    font-size: 20px;
+    font-weight: bolder;
+  }
+}
+.chartjs-render-monitor {
+  background-color: white;
+  padding: 30px 10px 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 2px;
+}
+
+
+
 // 案件新規作成画面
 .assign_form {
   font-size: 13px;
@@ -265,7 +321,6 @@ header {
   box-shadow: 0 0 2px;
   .index_table_btn_wrap {
     text-align: right;
-    
   }
   .assign_index_table {
     border-collapse: collapse;
@@ -284,16 +339,43 @@ header {
 .commit_container {
   display: flex;
   justify-content: space-between;
-  .commit_project_information, .commit_form {
-    margin: 0;
-    max-with: 500px;
+  .commit_form_container_wrap {
+    width: 49%;
+    .commit_form_table {
+      margin: 20px;
+      #commit_rate {
+        width: 50px;
+      }
+    }
+    .commit_target_sentence {
+      margin-left: 20px;
+    }
+    .commit_form {
+      margin: 20px 20px 10px 30px;
+    }
+    .btn_wrap {
+      text-align: center;
+    }
   }
-  .commit_project_information {
-    margin-right: 30px;
+  .aleady_commit_information_wrap {
+    width: 49%;
+    .aleady_commit_information {
+      margin: 20px !important;
+    }
   }
-  .commit_form {
-    .assign_index_table {
+}
+.commit_project_information {
+  margin: 2% auto;
+  width: 100%;
+  .table_shadow {
+    h3 {
+      text-align: left;
+    }
+    table {
       margin: 20px;
     }
   }
+}
+.not_found {
+  text-align: center;
 }

@@ -1,31 +1,34 @@
 <% provide(:title, '社員詳細') %>
+<%= link_to "<<戻る", employees_path %>
 <h2 class="icon">社員詳細</h2>
-<div class="assign_form">
+<div class="table_wrap">
   <%= render 'layouts/error_messages', resource: @employee %>
-  <table>
-    <tr>
-      <td>部署</td>
-      <td><%= @employee.department.name %></td>
-    </tr>
-    <tr>
-      <td>グレード</td>
-      <td><%= @employee.grade.name %></td>
-    </tr>
-    <tr>
-      <td>社員名</td>
-      <td><%= @employee.name %></td>
-    </tr>
-    <tr>
-      <td>社員ID</td>
-      <td><%= @employee.employee_id %></td>
-    </tr>
-    <tr>
-      <td>社員情報</td>
-      <td><%= @employee.information %></td>
-    </tr>
-  </table>
-  <div class="btn_wrap">
-    <%= link_to "編集する", edit_employee_path, :class => "btn_blue_green" %>
-    <%= link_to "削除する", employee_path(@employee.id), method: :delete, data: { confirm: "本当に削除してもよろしいですか?" }, :class => "btn_blue_green" %>
+  <div class="table_shadow">
+    <table>
+      <tr>
+        <td>部署</td>
+        <td><%= @employee.department.name %></td>
+      </tr>
+      <tr>
+        <td>グレード</td>
+        <td><%= @employee.grade.name %></td>
+      </tr>
+      <tr>
+        <td>社員名</td>
+        <td><%= @employee.name %></td>
+      </tr>
+      <tr>
+        <td>社員ID</td>
+        <td><%= @employee.employee_id %></td>
+      </tr>
+      <tr>
+        <td>社員情報</td>
+        <td><%= @employee.information %></td>
+      </tr>
+    </table>
+    <div class="btn_wrap">
+      <%= link_to "編集する", edit_employee_path, :class => "btn_blue_green" %>
+      <%= link_to "削除する", employee_path(@employee.id), method: :delete, data: { confirm: "本当に削除してもよろしいですか?" }, :class => "btn_blue_green" %>
+    </div>
   </div>
 </div>
