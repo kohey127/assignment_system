@@ -8,6 +8,7 @@ class CreateCommits < ActiveRecord::Migration[6.0]
 
       t.timestamps
       
+      add_index :commits, [ :employee_id, :project_id, :target_month ], unique: true
     end
   end
 end
