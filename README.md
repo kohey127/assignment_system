@@ -19,4 +19,4 @@ Ruby on Railsで開発したアプリケーション上に各社員の月別の�
 * OS：Linux(Ubuntu)
 * 言語：HTML,CSS,Javascript,Ruby,SQL
 * フレームワーク：Ruby on Rails
-* 使用ツール：cloud9、heroku
+* 使用ツール：cloud9、heroku、vscode
